@@ -1,99 +1,193 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Jugador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class JugadorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $jugadores = Jugador::all();
-        return view('jugadores.index', compact('jugadores'));
+
+        $data = [
+            'jugadores' => $jugadores,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('jugadores.create');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'apellido' => 'required|string|max:100',
-            'posicion' => 'nullable|string|max:50',
-            'numero_camiseta' => 'nullable|integer',
-            'club' => 'nullable|string|max:100',
-            'edad' => 'nullable|integer',
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'posicion' => 'nullable|max:255',
+            'club' => 'nullable|max:255',
+            'edad' => 'nullable|integer|min:0',
+            'numero_camiseta' => 'nullable|integer|min:0'
         ]);
 
-        try {
-            Jugador::create($request->all());
-            return redirect()->route('jugadores.index')->with('success', 'Jugador creado exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al crear el jugador: ' . $e->getMessage())->withInput();
+        if ($validator->fails()) {
+            $data = [
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
         }
+
+        $jugador = Jugador::create($validator->validated());
+
+        if (!$jugador) {
+            $data = [
+                'message' => 'Error al crear el jugador',
+                'status' => 500
+            ];
+            return response()->json($data, 500);
+        }
+
+        $data = [
+            'jugador' => $jugador,
+            'status' => 201
+        ];
+
+        return response()->json($data, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Jugador $jugador)
+    public function show($id)
     {
-        return view('jugadores.show', compact('jugador'));
+        $jugador = Jugador::find($id);
+
+        if (!$jugador) {
+            $data = [
+                'message' => 'Jugador no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        $data = [
+            'jugador' => $jugador,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Jugador $jugador)
+    public function destroy($id)
     {
-        return view('jugadores.edit', compact('jugador'));
+        $jugador = Jugador::find($id);
+
+        if (!$jugador) {
+            $data = [
+                'message' => 'Jugador no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        $jugador->delete();
+
+        $data = [
+            'message' => 'Jugador eliminado',
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Jugador $jugador)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'apellido' => 'required|string|max:100',
-            'posicion' => 'nullable|string|max:50',
-            'numero_camiseta' => 'nullable|integer',
-            'club' => 'nullable|string|max:100',
-            'edad' => 'nullable|integer',
+        $jugador = Jugador::find($id);
+
+        if (!$jugador) {
+            $data = [
+                'message' => 'Jugador no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'posicion' => 'nullable|max:255',
+            'club' => 'nullable|max:255',
+            'edad' => 'nullable|integer|min:0',
+            'numero_camiseta' => 'nullable|integer|min:0'
         ]);
 
-        try {
-            $jugador->update($request->all());
-            return redirect()->route('jugadores.index')->with('success', 'Jugador actualizado exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al actualizar el jugador: ' . $e->getMessage())->withInput();
+        if ($validator->fails()) {
+            $data = [
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
         }
+
+        $jugador->update($validator->validated());
+
+        $data = [
+            'message' => 'Jugador actualizado',
+            'jugador' => $jugador,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Jugador $jugador)
+    public function updatePartial(Request $request, $id)
     {
-        try {
-            $jugador->delete();
-            return redirect()->route('jugadores.index')->with('success', 'Jugador eliminado exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al eliminar el jugador: ' . $e->getMessage());
+        // Buscar el jugador por su ID
+        $jugador = Jugador::find($id);
+
+        // Si no se encuentra el jugador, retornar un error
+        if (!$jugador) {
+            $data = [
+                'message' => 'Jugador no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
         }
+
+        // Validar los datos de la solicitud
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'sometimes|max:255',
+            'apellido' => 'sometimes|max:255',
+            'posicion' => 'nullable|max:255',
+            'club' => 'nullable|max:255',
+            'edad' => 'nullable|integer|min:0',
+            'numero_camiseta' => 'nullable|integer|min:0'
+        ]);
+
+        // Si la validación falla, retornar un error
+        if ($validator->fails()) {
+            $data = [
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
+        }
+
+        // Actualizar solo los campos proporcionados en la solicitud
+        $jugador->update($request->only(array_keys($validator->validated())));
+
+        // Preparar la respuesta con el mensaje de actualización y el estado HTTP
+        $data = [
+            'message' => 'Jugador actualizado',
+            'jugador' => $jugador,
+            'status' => 200
+        ];
+
+        // Retornar la respuesta en formato JSON
+        return response()->json($data, 200);
     }
 }
