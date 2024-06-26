@@ -1,0 +1,98 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Thunder Client Test Copy",
+    "collectionId": "02da5097-a2b9-45fc-b056-9d89027801b4",
+    "dateExported": "2024-06-26T05:23:53.315Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "ba6ae07e-0e28-4753-a68f-348464f40352",
+            "colId": "02da5097-a2b9-45fc-b056-9d89027801b4",
+            "containerId": "",
+            "name": "metodo get",
+            "url": "http://127.0.0.1:8000/api/Jugador",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-06-24T03:47:19.329Z",
+            "modified": "2024-06-24T07:28:48.357Z",
+            "headers": []
+        },
+        {
+            "_id": "29359de5-789e-43ce-89bf-437064313fab",
+            "colId": "02da5097-a2b9-45fc-b056-9d89027801b4",
+            "containerId": "",
+            "name": "metodo post",
+            "url": "http://127.0.0.1:8000/api/Jugador",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-06-24T03:47:19.330Z",
+            "modified": "2024-06-25T23:15:27.330Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"nombre\": \"michelle\",\n    \"apellido\": \"ramirez\",\n    \"posicion\": \"Delantera\",\n    \"club\": \"america\",\n    \"edad\": 38,\n    \"numero_camiseta\": 11\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "16b75944-0de0-44df-9648-7e4f03f696bd",
+            "colId": "02da5097-a2b9-45fc-b056-9d89027801b4",
+            "containerId": "",
+            "name": "metodo show",
+            "url": "http://127.0.0.1:8000/api/Jugador/1",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-06-24T03:47:19.331Z",
+            "modified": "2024-06-25T23:15:39.200Z",
+            "headers": []
+        },
+        {
+            "_id": "29cc8794-7bd0-4c93-8012-670d990a3fc0",
+            "colId": "02da5097-a2b9-45fc-b056-9d89027801b4",
+            "containerId": "",
+            "name": "metodo delete",
+            "url": "http://127.0.0.1:8000/api/Jugador/9",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2024-06-24T03:47:19.332Z",
+            "modified": "2024-06-24T07:31:38.303Z",
+            "headers": []
+        },
+        {
+            "_id": "c8b90b3b-9e5a-46ae-9ab4-2abd1ca74f6c",
+            "colId": "02da5097-a2b9-45fc-b056-9d89027801b4",
+            "containerId": "",
+            "name": "metodo put",
+            "url": "http://127.0.0.1:8000/api/Jugador/1",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-06-24T03:47:19.333Z",
+            "modified": "2024-06-25T23:16:09.510Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"nombre\": \"michelle\",\n    \"apellido\": \"hurtado\",\n    \"posicion\": \"Delantera\",\n    \"club\": \"america\",\n    \"edad\": 38,\n    \"numero_camiseta\": 11\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "d2de0feb-783c-462b-bd12-3bdb39792acd",
+            "colId": "02da5097-a2b9-45fc-b056-9d89027801b4",
+            "containerId": "",
+            "name": "metodo patch",
+            "url": "http://localhost/desarrollo_web_Seleccion/seleccion/public/api/Jugador/1",
+            "method": "PATCH",
+            "sortNum": 70000,
+            "created": "2024-06-24T03:47:19.334Z",
+            "modified": "2024-06-25T23:16:20.810Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "  {\n    \"club\": \"santafe\"\n  }",
+                "form": []
+            }
+        }
+    ],
+    "ref": "oRQWaRXfox9rV8Qw7Ao_UMyacPgA9FV8VdjbS0DR_lK0UO9wibiUCk81F3VBhUgM8c9P0egsfQzNVCqnfdofeQ"
+}

@@ -10,6 +10,37 @@ use Illuminate\Support\Facades\Validator;
 
 class UsuarioController extends Controller
 {
+    public function login(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'correo' => 'required|email',
+        'password' => 'required|max:15',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Error en validación de los datos',
+            'errors' => $validator->errors(),
+            'status' => 400
+        ], 400);
+    }
+
+    $usuarios = Usuario::where('correo', $request->input('correo'))->first();
+
+    if (!$usuarios || !Hash::check($request->input('password'), $usuarios->password)) {
+        return response()->json([
+            'message' => 'Credenciales incorrectas. Por favor, verifica tu email y contraseña.',
+            'status' => 401
+        ], 401);
+    }
+
+    return response()->json([
+        'message' => 'Login exitoso',
+        'usuario' => $usuarios,
+        'status' => 200
+    ], 200);
+}
+
     public function index()
     {
         $usuarios = Usuario::all();

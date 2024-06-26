@@ -42,7 +42,7 @@ class JugadorIntegrationTest extends TestCase
             'edad' => 26
         ]);
         $response->assertStatus(200); // Verificar actualización exitosa
-        
+            
 
         // Eliminar el jugador
         $response = $this->deleteJson("/api/Jugador/{$jugadorId}");

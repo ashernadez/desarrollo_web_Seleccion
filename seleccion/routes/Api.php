@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\JugadorController;
 use App\Http\Controllers\Api\UsuarioController;
 
+
+Route::post('/login', [UsuarioController::class, 'login']);
+
 //rutas de jugador
 Route::get('/Jugador', [JugadorController::class , 'index'] );
 Route::get('/Jugador/{id}', [JugadorController::class, 'show']);
@@ -21,3 +24,4 @@ Route::get('/Usuario/{id}', [UsuarioController::class, 'show']);
 Route::put('/Usuario/{id}', [UsuarioController::class, 'update']);
 Route::patch('/Usuario/{id}', [UsuarioController::class, 'updatePartial']);
 Route::delete('/Usuario/{id}', [UsuarioController::class, 'destroy']);
+
